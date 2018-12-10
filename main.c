@@ -22,10 +22,18 @@ long add_parallel(const char *numbers) {
 }
 
 int main() {
-    // Due to limitations with how rand() works, we cannot parallelize this generation
     char *numbers = malloc(sizeof(long) * Num_To_Add);
-    for (long i = 0; i < Num_To_Add; i++) {
-        numbers[i] = (char) (rand() * Scale);
+
+    long chunk_size = Num_To_Add / omp_get_max_threads();
+#pragma omp parallel num_threads(omp_get_max_threads())
+    {
+        int p = omp_get_thread_num();
+        unsigned int seed = (unsigned int) time(NULL) + (unsigned int) p;
+        long chunk_start = p * chunk_size;
+        long chunk_end = chunk_start + chunk_size;
+        for (long i = chunk_start; i < chunk_end; i++) {
+            numbers[i] = (char) (rand_r(&seed) * Scale);
+        }
     }
 
     struct timeval start, end;
