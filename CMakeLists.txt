@@ -3,8 +3,8 @@ project(Lab2_Sum)
 
 set(CMAKE_C_STANDARD 11)
 
-set(SOURCE_FILES main.c main.c)
-add_executable(Lab2_Sum ${SOURCE_FILES} main.c)
+set(SOURCE_FILES Lab2_main.c Lab2_main.c)
+add_executable(Lab2_Sum ${SOURCE_FILES} Lab2_main.c)
 
 find_package(OpenMP)
 set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} ${OpenMP_C_FLAGS}")
